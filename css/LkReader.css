@@ -4,36 +4,13 @@ body{
 p{
 	font-size:20px;
 }
-body {
-	padding-top: 150px;
-}
-header {
-	position: fixed;
-	width: 100%;
-	top: 0;
-	/*讓header部分固定在頂端；設成fixed後width不會是100%要自己設定*/
-	padding-top:20px;
-	height: 200px;
-	background-image: url(../image/DSC02437.jpg);
-	font-size:50px;
-	text-align: center;
-	font-weight: bold;
-	color:black;
-	text-shadow:2px 2px 0 white;
-	/*用陰影製造假邊框文字的效果*/
-}
-.navbar{
-	border-radius: 0;
-	margin-bottom:0;
-	/*取消掉預設的圓角以及對下面的外間距*/
-}
 #main {
 	position: relative;
 	/*相對位置，沒設置的話會被固定在頂部的header蓋掉*/
 	background-color: black;
-	padding-top:50px;
+	padding-top:100px;
 	color:white;
-	min-height: 700px;
+	min-height: 100vh;
 }
 #BOX{
 	text-align: center;
@@ -52,6 +29,9 @@ header {
 	border:1px solid white;
 	padding:10px;
 	margin-bottom:10px;
+}
+.box:hover{
+	border-color:#F00;
 }
 #jumpImage{
 	position: fixed;

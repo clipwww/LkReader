@@ -14,19 +14,6 @@
 		<script src="js/bootstrap.min.js"></script>
 		<script>
 			$(function(){
-				var  mn = $(".navbar");
-				mns = "navbar-fixed-top";
-
-				$(window).scroll(function() {
-					if( $(this).scrollTop() > $('header').height() ) {
-						mn.addClass(mns); //當螢幕滾動下滑距離超過header的長度時就讓導覽列變成固定在頂端
-						$("#main").css("padding-top","100px"); //因為導覽列變成fixed的 所以會多出導覽列的空位 增加間距
-					}else{
-						mn.removeClass(mns);
-						$("#main").css("padding-top","50px");
-					}
-				});
-
 				var LkHTML = " ";
 
 				// find some demo xml - DuckDuckGo is great for this
@@ -46,17 +33,25 @@
 			    	}
 			        var Lk = data.query.results.rss.channel;
 
+			        var count = 1;
 			        $.each(Lk.item, function(i, comData){	
+
+			        	var title = comData.title.split("[");
+			        	title.push(title[3].split("]"));
 
 			        	LkHTML += "<div class=\"col-sm-3\">";
 			        	LkHTML += "<a href='"+ comData.link +"' targer='_blank'><div class='box'>";
-			        	LkHTML += "<p>" + comData.title + "</p>";
+			        	LkHTML += "<p>" + title[title.length-1][0] + "</p>";
 			        	LkHTML += "</div></a></div>";
 
-			        	$("#BOX").append(LkHTML);
-			        		
-			        	LkHTML=" ";
-
+			        	if( count % 4 === 0 ){
+			        		$("<div/>",{
+			        			"class":"row"
+			        		}).appendTo("#BOX").append(LkHTML);
+			        		console.log(i);
+			        		LkHTML=" ";
+			        	}      	
+			        	count++;
 			        });//end each
 			    });//end getJSON
 
@@ -144,12 +139,8 @@
 		</script>
 	</head>
 	<body>
-		<header>
-			<span class="glyphicon glyphicon-camera"> </span> LK輕之國度 Reader
-			<p>Try Try See</p>
-		</header>
 
-		<nav class="navbar navbar-inverse">
+		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navMenu">
@@ -157,8 +148,8 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">
-						裝飾品導覽列XD
+					<a class="navbar-brand" href="index.html">
+						LK READER
 					</a>
 				</div>	
 				<!--以上為導覽列Header部分；以下為導覽列主體部分-->
