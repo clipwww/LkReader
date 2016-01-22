@@ -1,0 +1,85 @@
+body{
+	font-family:微軟正黑體;
+}
+p{
+	font-size:20px;
+}
+body {
+	padding-top: 150px;
+}
+header {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	/*讓header部分固定在頂端；設成fixed後width不會是100%要自己設定*/
+	padding-top:20px;
+	height: 200px;
+	background-image: url(../image/DSC02437.jpg);
+	font-size:50px;
+	text-align: center;
+	font-weight: bold;
+	color:black;
+	text-shadow:2px 2px 0 white;
+	/*用陰影製造假邊框文字的效果*/
+}
+.navbar{
+	border-radius: 0;
+	margin-bottom:0;
+	/*取消掉預設的圓角以及對下面的外間距*/
+}
+#main {
+	position: relative;
+	/*相對位置，沒設置的話會被固定在頂部的header蓋掉*/
+	background-color: black;
+	padding-top:50px;
+	color:white;
+	min-height: 700px;
+}
+#BOX{
+	text-align: center;
+}
+#BOX a{
+	text-decoration:none;
+	color:white;
+}
+#BOX img{
+	width:20%;
+	border:1px solid white;
+	margin:5px 5px 5px 5px;
+	cursor: pointer;
+}
+.box{
+	border:1px solid white;
+	padding:10px;
+	margin-bottom:10px;
+}
+#jumpImage{
+	position: fixed;
+	top:0;
+	text-align: center;
+	width:100vw;
+	height: 100vh;
+	background-color: rgba(0,0,0,0.5);
+	display: none;
+	z-index: 99999;
+}
+#jumpImage img{
+	cursor:pointer;
+	max-height:95vh;
+	max-width: 100vw;
+
+}
+#jumpImage span{
+	color:#f00;
+	font-size: 80px;
+	cursor:pointer;
+	position: fixed;
+	opacity: 0.1;
+}
+#jumpImage span:hover{
+	opacity: 1;
+}
+button#close{
+	font-weight: bold;
+	font-size: 20px;
+}
