@@ -5,6 +5,7 @@ body{
 	background-position: right bottom;
 	background-repeat: no-repeat;
 	background-size: 15%;*/
+	overflow-x:hidden; 
 }
 .btn-block{
 	border-radius: 0;
@@ -149,13 +150,13 @@ header p{
 	color:white;
 	font-size: 50px;
 	width: 80px;
+	top:40vh;
 	cursor:pointer;
 	position: fixed;
 	opacity: 0.2;
 	background-color: rgba(0,0,0,0.2);
 }
 #jumpImage span:hover{
-	top:40vh;
 	opacity: 1;
 }
 #prev{
