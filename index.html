@@ -12,77 +12,96 @@
 		<link href="css/LkReader.css" rel="stylesheet"><!--自己寫的css要最後一個讀取-->
 		<script src="js/jquery-2.2.0.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery.xdomainajax.js"></script>
 		<script>
 			$(function(){
-				var LkHTML = " ";
+				var LkHTML = "";
+				var LkMenu = "";
+				var LK = "https://www.lightnovel.cn/";
 
-				// find some demo xml - DuckDuckGo is great for this
-				var URL = "https://www.lightnovel.cn/forum.php?mod=rss&fid=141&auth=0"
-				// build the yql query. Could be just a string - I think join makes easier reading
-				var yqlURL = [
-			    	"http://query.yahooapis.com/v1/public/yql",
-			        "?q=" + encodeURIComponent("select * from xml where url='" + URL + "'"),
-			        "&format=json&callback=?"
-			    ].join("");
-				// Now do the AJAX heavy lifting  
+				var LKURL = "https://www.lightnovel.cn/forum-141-1.html";
+				$.get(LKURL,getList).done(function(){
+					LKURL = "https://www.lightnovel.cn/forum-141-2.html";
+					$.get(LKURL,getList).done(function(){
+						$("#BOX").append(LkHTML);
+						$("#mainMenu ul").append(LkMenu);
+						LkHTML="";	
+						LkMenu="";						
+					})//end get					
+				})//end get
 
-			    $.getJSON(yqlURL, function(data){
-			    	if(data.query.results === null ){
-			    		$("#BOX").append('<h1>連線失敗惹<br/>(｡・ ω<)ゞ てへぺろ❤</h1><h1>應該是連線失敗，吧？<br/>不然就是其他某種可能的原因ㄏㄏ</h1><h1>總之</h1><h1>(´◓Д◔`) 哇幹!!<br/>( っค้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้c )</h1>');
-			    		return false;
-			    	}
-			        var Lk = data.query.results.rss.channel;
 
-			        var count = 1;
-			        $.each(Lk.item, function(i, comData){	
 
-			        	var title = comData.title.split("[");
-			        	title.push(title[3].split("]"));
+				function getList(data){
+					console.log(data);
+					$(data.responseText).find("[id*=\"normalthread\"] a.xst").each(function(i){
+						var comicLink = $(this).attr("href");
+						var title = $(this).text();
+						title = title.split("][");
 
-			        	LkHTML += "<div class=\"col-sm-3\">";
-			        	LkHTML += "<a href='"+ comData.link +"' targer='_blank'><div class='box'>";
-			        	LkHTML += "<p>" + title[title.length-1][0] + "</p>";
-			        	LkHTML += "</div></a></div>";
+			        	LkHTML += "<li>";
+			        	LkHTML += "<a href='"+ LK + comicLink +"' targer='_blank' name=\""+title[2]+"\">";
+			        	LkHTML += "<span class=\"comicTitle\">" + title[2] + "</span></a>";
+			        	LkHTML += "【" + title[3] + "】";
+			        	LkHTML += "</li>";
 
-			        	if( count % 4 === 0 ){
-			        		$("<div/>",{
-			        			"class":"row"
-			        		}).appendTo("#BOX").append(LkHTML);
-			        		LkHTML=" ";
-			        	}      	
-			        	count++;
-			        });//end each
-			    });//end getJSON
+			        	LkMenu += "<li><a href='"+ LK + comicLink +"' targer='_blank' name=\""+title[2]+"\">";
+			        	LkMenu += title[2];
+			        	LkMenu += "</a></li>";  	
+
+					})//end each
+					// $("#BOX").append(LkHTML);
+					// $("#mainMenu ul").append(LkMenu);
+					// LkHTML="";	
+					// LkMenu="";
+				}// end function			
+
+				function getComic(){
+			    	var link = $(this).attr("href");
+			    	$("header p").text( $(this).attr("name") );
+
+					yqlURL = [
+				    	"http://query.yahooapis.com/v1/public/yql",
+				        "?q=" + encodeURIComponent("select * from html where url='" + link + "'"),
+				        "&format=json&callback=?"
+				    ].join("");			    					
+
+					$("#BOX").text("");
+
+					$.get(link, function(data){
+						var swflink = $(data.responseText).find("param[name=\"movie\"]").attr("value");
+						if( swflink ){
+							$("#jumpSwf embed").attr("src", swflink);
+    						$("#jumpSwf").fadeIn(500);
+    						var tempBtn = "<button id=\"openSwf\"></button>";
+							$("#BOX").append(tempBtn);
+						}
+					});//end get
+
+				    $.getJSON(yqlURL,function(data){
+				    	
+				    	var imgLink = data.query.results.body.div[6].div[3].div[1].div[0].table.tbody.tr[0].td[1].div[1].div[1].div[0].table.tbody.tr.td;
+
+				    	$.each(imgLink.img, function(i, Comic){
+				    		imgSrc = Comic.file;
+				    		LkHTML += "<img src='"+ imgSrc +"' alt=\"LK\" />";
+				    	});//end each
+
+				    	$("#BOX").append(LkHTML);
+				    	LkHTML = " ";
+				    	
+				    });//end getJSON
+				    return false;
+    			}//end function		
 
 
 			    $("#BOX").on({
-			    	click: function(){
-		    			    	var link = $(this).attr("href");
-		    
-		    					yqlURL = [
-		    				    	"http://query.yahooapis.com/v1/public/yql",
-		    				        "?q=" + encodeURIComponent("select * from html where url='" + link + "'"),
-		    				        "&format=json&callback=?"
-		    				    ].join("");	
-		    					
-		    					$("#BOX").text(" ");
-
-		    				    $.getJSON(yqlURL,function(data){
-		    				    	
-		    				    	var imgLink = data.query.results.body.div[6].div[3].div[1].div[0].table.tbody.tr[0].td[1].div[1].div[1].div[0].table.tbody.tr.td;
-
-		    				    	$.each(imgLink.img, function(i, Comic){
-		    				    		imgSrc = Comic.file;
-		    				    		LkHTML += "<img src='"+ imgSrc +"' alt=\"LK\" />";
-		    				    	});//end each
-
-		    				    	$("#BOX").append(LkHTML);
-		    				    	LkHTML = " ";
-		    				    	
-		    				    });//end getJSON
-		    				    return false;
-			    			}
+			    	click:getComic
 			    },"a")
+
+			    $("#mainMenu").on({
+			    	click:getComic
+			    },"li a")
 
 			    $("#BOX").on({
 			    	click: function(){
@@ -97,6 +116,12 @@
 			    		});
 			    	}
 			    }, "img");
+
+			     $("#BOX").on({
+			    	click: function(){
+			    		$("#jumpSwf").fadeIn(500);
+			    	}
+			    }, "button#openSwf");
 
 			    var imgSrc2;
 	    		$("#jumpImage span#next").click(function(){
@@ -134,53 +159,68 @@
 	   				$("#jumpImage").fadeOut(500);
 	   			});
 
+	   			$("#jumpSwf button#closeSwf").click(function(){
+	   				$("#jumpSwf").fadeOut(500);
+	   			});
+
+	   			$("header span").click(function(){
+	   				var open = "glyphicon glyphicon-menu-hamburger";
+	   				var close = "glyphicon glyphicon-remove";
+
+	   				if( $(this).attr("class") === open ){
+	   					$(this).attr("class",close);
+	   					$(".test").css({
+	   						"width":"100vw",
+	   						"height":"100vh",
+	   						"background-color":"rgba(0,0,0,0.5)"
+	   					});
+		   				$("header").animate({"left":"260px"}, 600);
+		   				$("#BOX").animate({"left":"260px"}, 600);
+		   				$("#main").animate({"left":"260px"}, 600);
+		   				$("#mainMenu").animate({"left":0}, 600);
+	   				}else{
+	   					$(this).attr("class",open);
+		   				$("header").animate({"left":0}, 600);
+		   				$("#main").animate({"left":0}, 600);
+		   				$("#mainMenu").animate({"left":"-260px"}, 600);	   					
+	   				}
+
+	   			});
+
 			});
 		</script>
 	</head>
 	<body>
+		<header>
+			<span class="glyphicon glyphicon-menu-hamburger"></span>			
+			<p>LK輕之國度漫畫發佈區</p>
+		</header>
 
-		<nav class="navbar navbar-inverse navbar-fixed-top">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navMenu">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="index.html">
-						LK READER
-					</a>
-				</div>	
-				<!--以上為導覽列Header部分；以下為導覽列主體部分-->
-				<div class="collapse navbar-collapse" id="navMenu">
-					<ul class="nav navbar-nav">
-						<li class="active">
-							<a href="#" data-toggle="tab">MENU1</a>
-						</li>
-						<li>
-							<a href="#" data-toggle="tab">MENU2</a>
-						</li>
-						<li>
-							<a href="#" data-toggle="tab">MENU3</a>
-						</li>						
-					</ul>				
-				</div>				
-			</div>				
-		</nav>
+		<div id="mainMenu">
+			<a href="index.html" >
+				<span class="glyphicon glyphicon-home"></span>
+			</a>
+			<div>
+				<ul>
+				</ul>
+			</div>
+		</div>
 
 		<div id="main" >
-			<div class="container">
-			 	<div id="BOX">
-
-			 	</div>
+			<div id="BOX" class="container">
 			</div>
 		</div>
 
 		<div id="jumpImage">
-			<button id="close" class="btn btn-block" ></button>
-			<span id="prev" class="glyphicon glyphicon-chevron-left" style="left:0px;top:50vh"></span>
+			<button id="close" class="btn btn-danger btn-block btn-lg" ></button>
+			<span id="prev" class="glyphicon glyphicon-chevron-left"></span>
 			<img src=" " alt="jump!"/>
-			<span id="next" class="glyphicon glyphicon-chevron-right" style="right:0px;top:50vh"></span>
-		</div>		
+			<span id="next" class="glyphicon glyphicon-chevron-right"></span>
+		</div>
+
+		<div id="jumpSwf">
+			<button id="closeSwf" class="btn btn-danger btn-block btn-lg" >關閉</button>
+			<embed src="" autostart="true"/>
+		</div>
 	</body>
 </html>
