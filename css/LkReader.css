@@ -84,8 +84,6 @@ header p{
 	font-weight: bold;
 }
 #main {
-	position: absolute;
-	left:0;
 	width:100vw;
 	padding-top:100px;
 	color:white;
