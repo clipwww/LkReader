@@ -147,8 +147,8 @@ header p{
 #jumpImage span{
 	color:white;
 	font-size: 50px;
+	top:45px;
 	width: 80px;
-	top:40vh;
 	cursor:pointer;
 	position: fixed;
 	opacity: 0.2;
