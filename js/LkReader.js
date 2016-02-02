@@ -17,7 +17,6 @@ $(function(){
 
 
 	function getList(data){
-		console.log(data);
 		$(data.responseText).find("[id*=\"normalthread\"] a.xst").each(function(i){
 			var comicLink = $(this).attr("href");
 			var title = $(this).text();
@@ -92,6 +91,7 @@ $(function(){
     		var imgSrc = $(this).attr("src");
     		$("#jumpImage img").attr("src", imgSrc);
     		$("#jumpImage").fadeIn(500);
+    		$("body").css({"overflow":"hidden"});
 
     		$("#BOX img").each(function(i, data){	
     			if( imgSrc === $(data).attr("src") ){
@@ -104,6 +104,7 @@ $(function(){
      $("#BOX").on({
     	click: function(){
     		$("#jumpSwf").fadeIn(500);
+    		$("body").css({"overflow":"hidden"});
     	}
     }, "button#openSwf");
 
@@ -118,33 +119,37 @@ $(function(){
 
 				if( imgSrc2 === undefined ){
 					$("#jumpImage").fadeOut(500);
+					$("body").css({"overflow":""});
 				}
 			}
 		});
 	    $("#jumpImage img").attr("src", imgSrc2);
 		});
 		$("#jumpImage span#prev").click(function(){
-		imgSrc = $("#jumpImage img").attr("src");
-		$("#BOX img").each(function(i, data){
+			imgSrc = $("#jumpImage img").attr("src");
+			$("#BOX img").each(function(i, data){
 
-			if( imgSrc === $(data).attr("src") ){
-				imgSrc2 = $(this).prev().attr("src");
-				$("#close").text("第 "+ (i) + " 頁。點我關閉。");
+				if( imgSrc === $(data).attr("src") ){
+					imgSrc2 = $(this).prev().attr("src");
+					$("#close").text("第 "+ (i) + " 頁。點我關閉。");
 
-				if( imgSrc2 === undefined ){
-					$("#jumpImage").fadeOut(500);
+					if( imgSrc2 === undefined ){
+						$("#jumpImage").fadeOut(500);
+						$("body").css({"overflow":""});
+					}
 				}
-			}
-		});
-	    $("#jumpImage img").attr("src", imgSrc2);
+			});
+		    $("#jumpImage img").attr("src", imgSrc2);
 		});
 
 		$("#jumpImage button#close").click(function(){
 			$("#jumpImage").fadeOut(500);
+			$("body").css({"overflow":""});
 		});
 
 		$("#jumpSwf button#closeSwf").click(function(){
 			$("#jumpSwf").fadeOut(500);
+			$("body").css({"overflow":""});
 		});
 
 		$("header span").click(function(){
@@ -159,11 +164,12 @@ $(function(){
 					"background-color":"rgba(0,0,0,0.5)"
 				});
 				$("header").animate({"left":"260px"}, 600);
-				$("#BOX").animate({"left":"260px"}, 600);
+				$("body").css({"overflow":"hidden"});
 				$("#mainMenu").animate({"left":0}, 600);
 			}else{
 				$(this).attr("class",open);
 				$("header").animate({"left":0}, 600);
+				$("body").css({"overflow":""});
 				$("#mainMenu").animate({"left":"-260px"}, 600);	   					
 			}
 
