@@ -28,6 +28,21 @@ header span{
 	font-size: 40px;
 	float: left;
 	cursor:pointer;
+	-moz-transition-property: all;
+	-o-transition-property: all;
+	-webkit-transition-property: all;
+	transition-property: all;
+	/*當css bottom改變時會有過渡（一個狀態逐漸轉為另一個狀態）效果*/
+	-moz-transition-duration: 0.5s;
+	-o-transition-duration: 0.5s;
+	-webkit-transition-duration: 0.5s;
+	transition-duration: 0.5s;
+	/*過渡效果所持續的時間*/
+	-moz-transition-timing-function: ease;
+	-o-transition-timing-function: ease;
+	-webkit-transition-timing-function: ease;
+	transition-timing-function: ease;
+	/*過渡效果的動畫；ease是以低速開始->加速->結束前減速*/
 }
 header span:hover{
 	opacity: 0.7;

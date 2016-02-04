@@ -116,7 +116,7 @@ $(function(){
 			if( imgSrc === $(data).attr("src") ){
 				imgSrc2 = $(this).next().attr("src");
 				$("#close").text("第 "+ (i+2) + " 頁。點我關閉。");
-
+				$("#jumpImage").animate({"scrollTop":0}, 200);
 				if( imgSrc2 === undefined ){
 					$("#jumpImage").fadeOut(500);
 					$("body").css({"overflow":""});
@@ -124,55 +124,55 @@ $(function(){
 			}
 		});
 	    $("#jumpImage img").attr("src", imgSrc2);
-		});
-		$("#jumpImage span#prev").click(function(){
-			imgSrc = $("#jumpImage img").attr("src");
-			$("#BOX img").each(function(i, data){
+	});
+	$("#jumpImage span#prev").click(function(){
+		imgSrc = $("#jumpImage img").attr("src");
+		$("#BOX img").each(function(i, data){
 
-				if( imgSrc === $(data).attr("src") ){
-					imgSrc2 = $(this).prev().attr("src");
-					$("#close").text("第 "+ (i) + " 頁。點我關閉。");
-
-					if( imgSrc2 === undefined ){
-						$("#jumpImage").fadeOut(500);
-						$("body").css({"overflow":""});
-					}
+			if( imgSrc === $(data).attr("src") ){
+				imgSrc2 = $(this).prev().attr("src");
+				$("#close").text("第 "+ (i) + " 頁。點我關閉。");
+				$("#jumpImage").animate({"scrollTop":0}, 200);
+				if( imgSrc2 === undefined ){
+					$("#jumpImage").fadeOut(500);
+					$("body").css({"overflow":""});
 				}
-			});
-		    $("#jumpImage img").attr("src", imgSrc2);
-		});
-
-		$("#jumpImage button#close").click(function(){
-			$("#jumpImage").fadeOut(500);
-			$("body").css({"overflow":""});
-		});
-
-		$("#jumpSwf button#closeSwf").click(function(){
-			$("#jumpSwf").fadeOut(500);
-			$("body").css({"overflow":""});
-		});
-
-		$("header span").click(function(){
-			var open = "glyphicon glyphicon-menu-hamburger";
-			var close = "glyphicon glyphicon-remove";
-
-			if( $(this).attr("class") === open ){
-				$(this).attr("class",close);
-				$(".test").css({
-					"width":"100vw",
-					"height":"100vh",
-					"background-color":"rgba(0,0,0,0.5)"
-				});
-				$("header").animate({"left":"260px"}, 600);
-				$("body").css({"overflow":"hidden"});
-				$("#mainMenu").animate({"left":0}, 600);
-			}else{
-				$(this).attr("class",open);
-				$("header").animate({"left":0}, 600);
-				$("body").css({"overflow":""});
-				$("#mainMenu").animate({"left":"-260px"}, 600);	   					
 			}
-
 		});
+	    $("#jumpImage img").attr("src", imgSrc2);
+	});
+
+	$("#jumpImage button#close").click(function(){
+		$("#jumpImage").fadeOut(500);
+		$("body").css({"overflow":""});
+	});
+
+	$("#jumpSwf button#closeSwf").click(function(){
+		$("#jumpSwf").fadeOut(500);
+		$("body").css({"overflow":""});
+	});
+
+	$("header span").click(function(){
+		var open = "glyphicon glyphicon-menu-hamburger";
+		var close = "glyphicon glyphicon-remove";
+
+		if( $(this).attr("class") === open ){
+			$(this).attr("class",close);
+			$(".test").css({
+				"width":"100vw",
+				"height":"100vh",
+				"background-color":"rgba(0,0,0,0.5)"
+			});
+			$("header").animate({"left":"260px"}, 600);
+			$("body").css({"overflow":"hidden"});
+			$("#mainMenu").animate({"left":0}, 600);
+		}else{
+			$(this).attr("class",open);
+			$("header").animate({"left":0}, 600);
+			$("body").css({"overflow":""});
+			$("#mainMenu").animate({"left":"-260px"}, 600);	   					
+		}
+
+	});
 
 });
