@@ -165,22 +165,20 @@ header p{
 	color:white;
 	font-size: 50px;
 	top:50px;
-	width: 80px;
-	cursor:pointer;
+	width:25%;
 	position: fixed;
-	opacity: 0.2;
+	opacity: 0;
 	background-color: rgba(0,0,0,0.2);
-}
-#jumpImage span:hover{
-	opacity: 1;
 }
 #prev{
 	left: 0;
 	height: 100vh;
+	cursor:w-resize;
 }
 #next{
 	right:0;
 	height: 100vh;
+	cursor:e-resize;
 }
 button#close{
 	font-weight: bold;
